@@ -6,10 +6,10 @@ on: [push]
 
 defaults:
   run:
-    working-directory: infra/bootstrap
+    working-directory: infra/pipeline
 
 jobs:
-  tf-validate:
+  validate-lint-and-format:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,11 +21,24 @@ jobs:
         with:
           terraform_version: 1.14.6
 
-      - name: Terraform Format
+      - name: Install tf linter
+      - uses: terraform-linters/setup-tflint@v6
+        with:
+          cache: true
+
+      - name: Install tf plugins
+      - run: tflint --init
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Lint
+      - run: tflint -f compact
+
+      - name: Format
         run: terraform fmt -check -recursive
 
-      - name: Terraform Init
+      - name: Init
         run: terraform init -backend=false
 
-      - name: Terraform Validate
+      - name: Validate
         run: terraform validate
