@@ -3,12 +3,8 @@ name: CI Pipeline for GCP infrastructure
 run-name: "Infra update ${{ github.sha }} on ${{ github.ref }}"
 
 on:
-  push:
-    paths:
-      - "infra/pipeline/**"
-
   pull_request:
-    types: [closed]
+    types: [opened, reopened, synchronize, closed]
     branches: [main]
     paths:
       - "infra/pipeline/**"
@@ -76,3 +72,32 @@ jobs:
       - name: Terraform Plan
         timeout-minutes: 5
         run: terraform plan -no-color -input=false -lock-timeout=60s
+
+  # apply-changes:
+  #   if: github.event.pull_request.merged == true
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v5
+
+  #     - name: Terraform setup
+  #       uses: hashicorp/setup-terraform@v4
+  #       with:
+  #         terraform_version: 1.14.6
+
+  #     - name: Authenticate
+  #       uses: google-github-actions/auth@v2
+  #       with:
+  #         credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+  #     - name: Terraform init
+  #       run: terraform init
+
+  #     - name: Terraform Plan
+  #       timeout-minutes: 5
+  #       run: terraform plan -no-color -input=false -lock-timeout=60s
+
+  #     - name: Terraform Apply
+  #       if: success()
+  #       run: terraform apply -auto-approve
