@@ -22,17 +22,17 @@ jobs:
           terraform_version: 1.14.6
 
       - name: Install tf linter
-      - uses: terraform-linters/setup-tflint@v6
+        uses: terraform-linters/setup-tflint@v6
         with:
           cache: true
 
       - name: Install tf plugins
-      - run: tflint --init
+        run: tflint --init
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Lint
-      - run: tflint -f compact
+        run: tflint -f compact
 
       - name: Format
         run: terraform fmt -check -recursive
