@@ -6,7 +6,7 @@ on: [push]
 
 defaults:
   run:
-    working-directory: infra/pipeline
+    working-directory: infra/bootstrap
 
 jobs:
   tf-validate:
