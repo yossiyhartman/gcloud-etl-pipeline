@@ -23,12 +23,6 @@ variable "artifact_repo_id" {
   }
 }
 
-variable "instance_name" {
-  description = "name of the CloudSQL instance"
-  type        = string
-  default     = "yossi-db-instance"
-}
-
 variable "db_name" {
   description = "Name of the database"
   type        = string
