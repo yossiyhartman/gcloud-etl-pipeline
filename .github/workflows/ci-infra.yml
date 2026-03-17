@@ -2,14 +2,19 @@ name: CI Pipeline for GCP infrastructure
 
 run-name: "Infra update ${{ github.sha }} on ${{ github.ref }}"
 
-on: [push]
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+    branches: [main]
+    paths:
+      - "infra/pipeline/**"
 
 defaults:
   run:
-    working-directory: infra/bootstrap
+    working-directory: infra/pipeline
 
 jobs:
-  tf-validate:
+  validate-lint-and-format:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,11 +26,82 @@ jobs:
         with:
           terraform_version: 1.14.6
 
-      - name: Terraform Format
+      - name: Install tf linter
+        uses: terraform-linters/setup-tflint@v6
+        with:
+          cache: true
+
+      - name: Install tf plugins
+        run: tflint --init
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Lint
+        run: tflint -f compact
+
+      - name: Format
         run: terraform fmt -check -recursive
 
-      - name: Terraform Init
+      - name: Init
         run: terraform init -backend=false
 
-      - name: Terraform Validate
+      - name: Validate
         run: terraform validate
+
+  authenticate-and-plan:
+    needs: validate-lint-and-format
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Terraform setup
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.14.6
+
+      - name: Authenticate
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Terraform init
+        run: terraform init
+
+      - name: Terraform Plan
+        timeout-minutes: 5
+        env:
+          TF_VAR_db_user: ${{ secrets.TF_DBUSER }}
+          TF_VAR_db_password: ${{ secrets.TF_DBPASS }}
+          TF_VAR_db_name: ${{ secrets.TF_DBNAME }}
+        run: terraform plan -no-color -input=false -lock-timeout=60s
+
+  apply-changes:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Terraform setup
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.14.6
+
+      - name: Authenticate
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Terraform init
+        run: terraform init
+
+      - name: Terraform Plan
+        timeout-minutes: 5
+        run: terraform plan -no-color -input=false -lock-timeout=60s
+
+      - name: Terraform Apply
+        if: ${{ success() }}
+        run: terraform apply -auto-approve
