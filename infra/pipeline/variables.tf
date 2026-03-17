@@ -1,4 +1,3 @@
-# General
 
 variable "project_name" {
   description = "Name of the GCP Project"
@@ -12,16 +11,17 @@ variable "service_acount_email" {
   default     = "terraform@yossi-infra-ci-project.iam.gserviceaccount.com"
 }
 
-# variable "artifact_repo_id" {
-#   description = "the name of the repo in the Artifact Repository"
-#   type        = string
-#   default     = "yossi-repo"
+variable "artifact_repo_id" {
+  description = "the name of the repo in the Artifact Repository"
+  type        = string
+  default     = "yossi-repo"
+}
 
-#   validation {
-#     condition     = can(regex("^[a-z][a-z0-9-]{0,62}$", var.artifact_repo_id))
-#     error_message = "artifact_repo_id must start with a lowercase letter and contain only lowercase letters, numbers, and hyphens (max 63 characters)."
-#   }
-# }
+variable "instance_name" {
+  description = "Name of the instance"
+  type        = string
+  default     = "yossi-db-instance"
+}
 
 variable "db_name" {
   description = "Name of the database"

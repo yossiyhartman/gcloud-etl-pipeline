@@ -1,6 +1,5 @@
 locals {
   service_account_roles = [
-    "roles/storage.admin",
     "roles/run.admin",
     "roles/cloudsql.admin",
     "roles/artifactregistry.admin",
