@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - "infra/pipeline/**"
+      - ".github/workflows/ci-infra.yml"
 
 defaults:
   run:
@@ -80,6 +81,11 @@ jobs:
   apply-changes:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+
+    env:
+      TF_VAR_db_user: ${{ secrets.TF_DBUSER }}
+      TF_VAR_db_password: ${{ secrets.TF_DBPASS }}
+      TF_VAR_db_name: ${{ secrets.TF_DBNAME }}
 
     steps:
       - name: Checkout
