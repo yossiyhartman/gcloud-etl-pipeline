@@ -3,7 +3,8 @@ locals {
     "roles/storage.admin",
     "roles/run.admin",
     "roles/cloudsql.admin",
-    "roles/artifactregistry.admin"
+    "roles/artifactregistry.admin",
+    "roles/secretmanager.admin"
   ]
 }
 

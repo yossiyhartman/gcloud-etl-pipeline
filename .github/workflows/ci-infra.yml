@@ -16,6 +16,7 @@ defaults:
 
 jobs:
   validate-lint-and-format:
+    if: github.event.pull_request.merged != true
     runs-on: ubuntu-latest
 
     steps:
@@ -51,6 +52,7 @@ jobs:
 
   authenticate-and-plan:
     needs: validate-lint-and-format
+    if: github.event.pull_request.merged != true
     runs-on: ubuntu-latest
 
     steps:
