@@ -28,24 +28,24 @@ module "iam" {
   depends_on            = [module.project]
 }
 
-# module "artifact" {
-#   source           = "./modules/artifact"
-#   project_name     = var.project_name
-#   artifact_repo_id = var.artifact_repo_id
-#   depends_on       = [module.project, module.iam]
-# }
+module "artifact" {
+  source           = "./modules/artifact"
+  project_name     = var.project_name
+  artifact_repo_id = var.artifact_repo_id
+  depends_on       = [module.project, module.iam]
+}
 
-# module "storage" {
-#   source       = "./modules/storage"
-#   project_name = var.project_name
-#   bucket_name  = "yossi-data-bucket"
-#   depends_on   = [module.project, module.iam]
-# }
+module "storage" {
+  source       = "./modules/storage"
+  project_name = var.project_name
+  bucket_name  = "yossi-data-bucket"
+  depends_on   = [module.project, module.iam]
+}
 
-# module "database" {
-#   source                = "./modules/database"
-#   project_name          = var.project_name
-#   service_account_email = var.service_acount_email
-#   instance_name         = var.instance_name
-#   depends_on            = [module.project, module.iam]
-# }
+module "database" {
+  source                = "./modules/database"
+  project_name          = var.project_name
+  service_account_email = var.service_acount_email
+  instance_name         = var.instance_name
+  depends_on            = [module.project, module.iam]
+}
