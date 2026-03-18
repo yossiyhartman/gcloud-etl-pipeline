@@ -1,29 +1,45 @@
-locals {
-  secrets = {
-    db-user-secret     = var.db_user
-    db-password-secret = var.db_password
-    db-name-secret     = var.db_name
-  }
-}
+# NAME
 
-resource "google_secret_manager_secret" "secrets" {
-  for_each  = local.secrets
-  secret_id = each.key
+resource "google_secret_manager_secret" "db-name-secret-name" {
+  secret_id = "db-name-secret"
 
   replication {
     auto {}
   }
 }
 
-resource "google_secret_manager_secret_version" "secrets" {
-  for_each    = local.secrets
-  secret      = google_secret_manager_secret.secrets[each.key].id
-  secret_data = each.value
+resource "google_secret_manager_secret_version" "db-name-secret-value" {
+  secret      = google_secret_manager_secret.db-name-secret-name.secret_id
+  secret_data = var.db_name
 }
 
-resource "google_secret_manager_secret_iam_member" "secret_access" {
-  for_each  = local.secrets
-  secret_id = google_secret_manager_secret.secrets[each.key].id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${var.service_account_email}"
+
+# USER
+
+resource "google_secret_manager_secret" "db-user-secret-name" {
+  secret_id = "db-user-secret"
+
+  replication {
+    auto {}
+  }
+}
+
+resource "google_secret_manager_secret_version" "db-user-secret-value" {
+  secret      = google_secret_manager_secret.db-user-secret-name.secret_id
+  secret_data = var.db_user
+}
+
+# PASSWORD
+
+resource "google_secret_manager_secret" "db-password-secret-name" {
+  secret_id = "db-password-secret"
+
+  replication {
+    auto {}
+  }
+}
+
+resource "google_secret_manager_secret_version" "db-password-secret-value" {
+  secret      = google_secret_manager_secret.db-password-secret-name.secret_id
+  secret_data = var.db_password
 }
