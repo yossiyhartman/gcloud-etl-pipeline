@@ -6,15 +6,14 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "commitizen>=4.13.9",
-    "google-cloud-storage>=3.9.0",
-    "pytest>=9.0.2",
+    "pyarrow>=23.0.1",
 ]
 
 [project.scripts]
 gcp-pipeline = "gcp_pipeline:main"
 
 [build-system]
-requires = ["uv_build>=0.9.7,<0.10.0"]
+requires = ["uv_build>=0.9.7,<=0.10.11"]
 build-backend = "uv_build"
 
 [tool.ruff]
