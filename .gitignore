@@ -257,4 +257,5 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+secrets/
 secrets/**
