@@ -15,14 +15,16 @@ provider "google" {
 
 locals {
   service_account_roles = [
+    "roles/editor",
+    "roles/iam.serviceAccountUser",
+    "roles/secretmanager.admin",
     "roles/serviceusage.serviceUsageAdmin",
     "roles/resourcemanager.projectIamAdmin",
-    "roles/storage.admin",
   ]
 }
 
-# State Bucket
 
+# State Bucket
 resource "google_storage_bucket" "terraform_state" {
   project  = var.project_name
   name     = "${var.project_name}-terraform-state"

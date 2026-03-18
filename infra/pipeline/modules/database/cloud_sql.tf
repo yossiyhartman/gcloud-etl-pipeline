@@ -10,3 +10,15 @@ resource "google_sql_database_instance" "instance" {
 
   deletion_protection = false
 }
+
+resource "google_sql_database" "database" {
+  name     = var.db_name
+  instance = google_sql_database_instance.instance.name
+}
+
+
+resource "google_sql_user" "user" {
+  name     = var.db_user
+  instance = google_sql_database_instance.instance.name
+  password = var.db_password
+}

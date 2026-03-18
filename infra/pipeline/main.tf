@@ -47,5 +47,8 @@ module "database" {
   project_name          = var.project_name
   service_account_email = var.service_acount_email
   instance_name         = var.instance_name
+  db_name               = var.db_name
+  db_user               = var.db_user
+  db_password           = var.db_password
   depends_on            = [module.project, module.iam]
 }
