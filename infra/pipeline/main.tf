@@ -19,13 +19,11 @@ module "project" {
 }
 
 module "iam" {
-  source                = "./modules/iam"
-  project_name          = var.project_name
-  service_account_email = var.service_acount_email
-  db_name               = var.db_name
-  db_user               = var.db_user
-  db_password           = var.db_password
-  depends_on            = [module.project]
+  source      = "./modules/iam"
+  db_name     = var.db_name
+  db_user     = var.db_user
+  db_password = var.db_password
+  depends_on  = [module.project]
 }
 
 module "artifact" {
@@ -43,12 +41,18 @@ module "storage" {
 }
 
 module "database" {
-  source                = "./modules/database"
-  project_name          = var.project_name
-  service_account_email = var.service_acount_email
-  instance_name         = var.instance_name
-  db_name               = var.db_name
-  db_user               = var.db_user
-  db_password           = var.db_password
-  depends_on            = [module.project, module.iam]
+  source        = "./modules/database"
+  project_name  = var.project_name
+  instance_name = var.instance_name
+  db_name       = var.db_name
+  db_user       = var.db_user
+  db_password   = var.db_password
+  depends_on    = [module.project, module.iam]
+}
+
+module "compute" {
+  source               = "./modules/compute"
+  project_name         = var.project_name
+  service_acount_email = var.service_acount_email
+  depends_on           = [module.project, module.iam]
 }

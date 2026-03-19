@@ -1,12 +1,12 @@
-variable "project_name" {
-  description = "Name of the GCP Project"
-  type        = string
-}
+# variable "project_name" {
+#   description = "Name of the GCP Project"
+#   type        = string
+# }
 
-variable "service_account_email" {
-  description = "the email of the service account"
-  type        = string
-}
+# variable "service_account_email" {
+#   description = "the email of the service account"
+#   type        = string
+# }
 
 variable "db_name" {
   description = "Name of the database"
