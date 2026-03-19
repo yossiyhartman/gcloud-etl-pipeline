@@ -5,8 +5,11 @@ description = ""
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "cloud-sql-python-connector[pg8000]>=1.20.1",
     "commitizen>=4.13.9",
     "pyarrow>=23.0.1",
+    "python-dotenv>=1.2.2",
+    "sqlalchemy>=2.0.48",
 ]
 
 [project.scripts]
