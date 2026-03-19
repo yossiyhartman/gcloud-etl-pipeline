@@ -1,3 +1,14 @@
+terraform {
+  required_version = "v1.14.6"
+
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "6.8.0"
+    }
+  }
+}
+
 resource "google_sql_database_instance" "instance" {
   project          = var.project_name
   name             = var.instance_name
