@@ -30,6 +30,7 @@ module "artifact" {
   source           = "./modules/artifact"
   project_name     = var.project_name
   artifact_repo_id = var.artifact_repo_id
+  region           = var.region
   depends_on       = [module.project, module.iam]
 }
 
@@ -43,6 +44,7 @@ module "storage" {
 module "database" {
   source        = "./modules/database"
   project_name  = var.project_name
+  region        = var.region
   instance_name = var.instance_name
   db_name       = var.db_name
   db_user       = var.db_user
@@ -51,8 +53,6 @@ module "database" {
 }
 
 module "compute" {
-  source               = "./modules/compute"
-  project_name         = var.project_name
-  service_acount_email = var.service_acount_email
-  depends_on           = [module.project, module.iam]
+  source     = "./modules/compute"
+  depends_on = [module.project, module.iam]
 }

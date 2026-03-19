@@ -3,10 +3,11 @@ variable "project_name" {
   type        = string
 }
 
-variable "service_acount_email" {
-  description = "Name of the serviea account"
+variable "region" {
+  description = "The region to store resources"
   type        = string
 }
+
 
 variable "artifact_repo_id" {
   description = "the name of the repo in the Artifact Repository"

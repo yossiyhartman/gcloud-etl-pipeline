@@ -3,6 +3,11 @@ variable "project_name" {
   type        = string
 }
 
+variable "region" {
+  description = "The region to store resources"
+  type        = string
+}
+
 variable "artifact_repo_id" {
   description = "the name of the repo in the Artifact Repository"
   type        = string

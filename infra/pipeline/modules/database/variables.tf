@@ -3,6 +3,11 @@ variable "project_name" {
   type        = string
 }
 
+variable "region" {
+  description = "The region to store resources"
+  type        = string
+}
+
 variable "instance_name" {
   description = "name of the CloudSQL instance"
   type        = string
