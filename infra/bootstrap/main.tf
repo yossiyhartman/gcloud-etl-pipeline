@@ -46,7 +46,7 @@ resource "google_storage_bucket" "terraform_state" {
 
 resource "google_service_account" "terraform_sa" {
   project      = var.project_name
-  account_id   = var.sa_account_name
+  account_id   = "terraform"
   display_name = "Terraform Service Account"
 
   lifecycle {

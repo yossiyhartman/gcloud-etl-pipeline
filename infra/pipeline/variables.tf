@@ -1,26 +1,27 @@
-
 variable "project_name" {
   description = "Name of the GCP Project"
   type        = string
-  default     = "yossi-infra-ci-project"
 }
 
-variable "service_acount_email" {
-  description = "Name of the serviea account"
+variable "region" {
+  description = "The region to store resources"
   type        = string
-  default     = "terraform@yossi-infra-ci-project.iam.gserviceaccount.com"
 }
+
 
 variable "artifact_repo_id" {
   description = "the name of the repo in the Artifact Repository"
   type        = string
-  default     = "yossi-repo"
+}
+
+variable "bucket_name" {
+  description = "name of the bucket"
+  type        = string
 }
 
 variable "instance_name" {
   description = "Name of the instance"
   type        = string
-  default     = "yossi-db-instance"
 }
 
 variable "db_name" {

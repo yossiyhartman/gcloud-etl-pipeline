@@ -3,10 +3,10 @@ variable "project_name" {
   type        = string
 }
 
-# variable "service_account_email" {
-#   description = "Email of the service account"
-#   type        = string
-# }
+variable "region" {
+  description = "The region to store resources"
+  type        = string
+}
 
 variable "instance_name" {
   description = "name of the CloudSQL instance"

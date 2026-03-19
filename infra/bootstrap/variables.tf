@@ -3,9 +3,3 @@ variable "project_name" {
   type        = string
   default     = "yossi-infra-ci-project"
 }
-
-variable "sa_account_name" {
-  description = "name of the Service Account"
-  type        = string
-  default     = "terraform"
-}
