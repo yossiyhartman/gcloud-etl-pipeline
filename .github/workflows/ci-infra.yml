@@ -39,7 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Lint
-        run: tflint -f compact
+        run: tflint --recursive -f compact
 
       - name: Format
         run: terraform fmt -check -recursive
