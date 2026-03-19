@@ -17,9 +17,8 @@ INSTANCE_CONNECTION_NAME = os.environ.get("CONNECTION_NAME", "")
 DB_USER = os.environ.get("DB_USER", "")
 DB_PASS = os.environ.get("DB_PASS", "")
 DB_NAME = os.environ.get("DB_NAME", "")
-IP_TYPE = IPTypes.PRIVATE if os.environ.get("PRIVATE_IP") else IPTypes.PUBLIC
 
-TABLE_NAME = os.environ.get("TABLE_NAME")
+TABLE_NAME = os.environ.get("TABLE_NAME", "")
 
 
 def create_engine(connector: Connector) -> sqlalchemy.engine.Engine:
@@ -31,13 +30,13 @@ def create_engine(connector: Connector) -> sqlalchemy.engine.Engine:
             user=DB_USER,
             password=DB_PASS,
             db=DB_NAME,
-            ip_type=IP_TYPE,
+            ip_type=IPTypes.PUBLIC,
         )
 
     return sqlalchemy.create_engine("postgresql+pg8000://", creator=get_conn)
 
 
-def ingest():
+def ingest_in_database():
     logger.info("Loading data..")
     df = load_all(BUCKET_PATH)
     logger.info("Loaded. number of rows: %d", len(df))
@@ -63,4 +62,4 @@ if __name__ == "__main__":
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
-    ingest()
+    ingest_in_database()

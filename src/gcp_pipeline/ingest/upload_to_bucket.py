@@ -9,7 +9,7 @@ from gcp_pipeline.generate.data_generator import DataGenerator
 logger = logging.getLogger(__name__)
 
 
-def main():
+def ingest_in_storage():
     bucket_path = os.getenv("BUCKET_PATH", "")
 
     logger.info("Generating data...")
@@ -36,4 +36,5 @@ if __name__ == "__main__":
         level=logging.INFO,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
-    main()
+
+    ingest_in_storage()
