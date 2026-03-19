@@ -14,7 +14,7 @@ variable "artifact_repo_id" {
   type        = string
 }
 
-variable "bucket-name" {
+variable "bucket_name" {
   description = "name of the bucket"
   type        = string
 }
