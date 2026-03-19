@@ -52,3 +52,11 @@ module "database" {
   db_password           = var.db_password
   depends_on            = [module.project, module.iam]
 }
+
+
+module "compute" {
+  source               = "./modules/compute"
+  project_name         = var.project_name
+  service_acount_email = var.service_acount_email
+  depends_on           = [module.project, module.iam]
+}
