@@ -6,34 +6,34 @@ import pyarrow.dataset as ds
 
 from gcp_pipeline.generate.data_generator import DataGenerator
 
-BUCKET_PATH = os.getenv("BUCKET_PATH")
-
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 def main():
+    bucket_path = os.getenv("BUCKET_PATH", "")
 
-    # Generate some dummy data
-    logger.info("generating data...")
+    logger.info("Generating data...")
     data = DataGenerator().generate(n_records=1)
 
-    logger.info(data)
-
-    # Create a pyarrow table
+    # Convert to Arrow table
     table = pa.table(data)
 
-    logger.info("Writing to bucket...")
-    # Upload the data to gcp, and partition on the event-time
+    logger.info("Writing dataset to bucket...")
+
     ds.write_dataset(
         table,
-        base_dir=BUCKET_PATH,
+        base_dir=bucket_path,
         format="parquet",
-        partitioning=["event_time"],
+        partitioning=["event_time"],  # assumes this column exists
         existing_data_behavior="overwrite_or_ignore",
     )
-    logger.info("Success!")
+
+    logger.info("Success! ✅")
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=0)
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    )
     main()
