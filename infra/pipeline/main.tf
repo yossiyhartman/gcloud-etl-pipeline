@@ -36,7 +36,7 @@ module "artifact" {
 module "storage" {
   source       = "./modules/storage"
   project_name = var.project_name
-  bucket_name  = "yossi-data-bucket"
+  bucket_name  = var.bucket-name
   depends_on   = [module.project, module.iam]
 }
 

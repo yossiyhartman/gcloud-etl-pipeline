@@ -3,14 +3,18 @@ import os
 
 import pyarrow as pa
 import pyarrow.dataset as ds
+from dotenv import load_dotenv
 
 from gcp_pipeline.generate.data_generator import DataGenerator
 
 logger = logging.getLogger(__name__)
 
+load_dotenv()
+
+BUCKET_PATH = "gs://" + os.getenv("BUCKET_NAME", "")
+
 
 def ingest_in_storage():
-    bucket_path = os.getenv("BUCKET_PATH", "")
 
     logger.info("Generating data...")
     data = DataGenerator().generate(n_records=1)
@@ -22,9 +26,9 @@ def ingest_in_storage():
 
     ds.write_dataset(
         table,
-        base_dir=bucket_path,
+        base_dir=BUCKET_PATH,
         format="parquet",
-        partitioning=["event_time"],  # assumes this column exists
+        partitioning=["event_time"],
         existing_data_behavior="overwrite_or_ignore",
     )
 

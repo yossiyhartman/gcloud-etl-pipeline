@@ -11,21 +11,20 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-BUCKET_PATH: str = os.environ.get("BUCKET_PATH", "")
-
-INSTANCE_CONNECTION_NAME = os.environ.get("CONNECTION_NAME", "")
-DB_USER = os.environ.get("DB_USER", "")
-DB_PASS = os.environ.get("DB_PASS", "")
-DB_NAME = os.environ.get("DB_NAME", "")
-
-TABLE_NAME = os.environ.get("TABLE_NAME", "")
+BUCKET_PATH = "gs://" + os.getenv("BUCKET_NAME", "")
+PROJECT_NAME = os.getenv("PROJECT_NAME", "")
+REGION = os.getenv("REGION", "")
+DB_INSTANCE_NAME = os.getenv("DB_INSTANCE_NAME", "")
+DB_USER = os.getenv("DB_USER", "")
+DB_PASS = os.getenv("DB_PASS", "")
+DB_NAME = os.getenv("DB_NAME", "")
 
 
 def create_engine(connector: Connector) -> sqlalchemy.engine.Engine:
 
     def get_conn():
         return connector.connect(
-            INSTANCE_CONNECTION_NAME,
+            f"{PROJECT_NAME}:{REGION}:{DB_INSTANCE_NAME}",
             "pg8000",
             user=DB_USER,
             password=DB_PASS,
@@ -48,7 +47,7 @@ def ingest_in_database():
         try:
             logger.info("Writing to database...")
 
-            df.to_sql(TABLE_NAME, engine, if_exists="replace")
+            df.to_sql("moods", engine, if_exists="replace")
 
             logger.info("Success! ✅")
 
