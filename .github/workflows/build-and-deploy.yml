@@ -4,11 +4,11 @@ run-name: "CI Building and Deploying ${{ github.sha }} on ${{ github.ref }}"
 
 on:
   push:
-    paths: "./src"
+    paths: "./src/**/*"
     branches:
       - main
   pull_request:
-    paths: "./src"
+    paths: "./src/**/*"
 
 jobs:
   build:

@@ -7,7 +7,7 @@ on:
     types: [opened, reopened, synchronize, closed]
     branches: [main]
     paths:
-      - "infra/pipeline/**"
+      - "infra/pipeline/**/*"
 
 defaults:
   run:

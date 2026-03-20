@@ -2,7 +2,10 @@ name: CI Format check
 
 run-name: "Format check ${{ github.sha }} on ${{ github.ref }}"
 
-on: [push]
+on:
+  push:
+    paths:
+      - "./src/**/*"
 
 jobs:
   format:
