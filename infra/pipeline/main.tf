@@ -19,11 +19,8 @@ module "project" {
 }
 
 module "iam" {
-  source      = "./modules/iam"
-  db_name     = var.db_name
-  db_user     = var.db_user
-  db_password = var.db_password
-  depends_on  = [module.project]
+  source     = "./modules/iam"
+  depends_on = [module.project]
 }
 
 module "artifact" {
