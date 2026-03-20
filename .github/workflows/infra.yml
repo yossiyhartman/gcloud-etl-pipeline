@@ -1,4 +1,4 @@
-name: CI Pipeline for GCP infrastructure
+name: CI Pipeline for GCP
 
 run-name: "Infra update ${{ github.sha }} on ${{ github.ref }}"
 
@@ -8,7 +8,6 @@ on:
     branches: [main]
     paths:
       - "infra/pipeline/**"
-      - ".github/workflows/ci-infra.yml"
 
 defaults:
   run:
@@ -26,7 +25,7 @@ env:
   TF_VAR_db_password: ${{ secrets.DB_PASS }}
 
 jobs:
-  validate-lint-and-format:
+  lint:
     if: github.event.pull_request.merged != true
     runs-on: ubuntu-latest
 
@@ -52,8 +51,34 @@ jobs:
       - name: Lint
         run: tflint --recursive -f compact
 
+  format:
+    if: github.event.pull_request.merged != true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.14.6
+
       - name: Format
         run: terraform fmt -check -recursive
+
+  validate:
+    if: github.event.pull_request.merged != true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.14.6
 
       - name: Init
         run: terraform init -backend=false
@@ -61,8 +86,8 @@ jobs:
       - name: Validate
         run: terraform validate
 
-  authenticate-and-plan:
-    needs: validate-lint-and-format
+  plan:
+    needs: [lint, format, validate]
     if: github.event.pull_request.merged != true
     runs-on: ubuntu-latest
 
@@ -87,7 +112,7 @@ jobs:
         timeout-minutes: 5
         run: terraform plan -no-color -input=false -lock-timeout=60s
 
-  apply-changes:
+  apply:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 

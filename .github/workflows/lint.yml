@@ -1,0 +1,19 @@
+name: CI Linting check
+
+run-name: "Lint check ${{ github.sha }} on ${{ github.ref }}"
+
+on: [push]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Lint Check
+        uses: astral-sh/ruff-action@v3
+        with:
+          src: "./src"
+          args: "check --diff --output-format=github --preview"
