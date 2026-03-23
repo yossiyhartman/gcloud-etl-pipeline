@@ -41,3 +41,8 @@ variable "db_password" {
   type        = string
   sensitive   = true
 }
+
+variable "elt_image_name" {
+  description = "Name of the image"
+  type        = string
+}

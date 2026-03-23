@@ -1,14 +1,14 @@
 name: CI for building and deploying images
 
-run-name: "CI Building and Deploying ${{ github.sha }} on ${{ github.ref }}"
+run-name: "CI Build package ${{ github.sha }} on ${{ github.ref }}"
 
 on:
   push:
-    paths: "./src"
+    paths: "./src/**/*"
     branches:
       - main
   pull_request:
-    paths: "./src"
+    paths: "./src/**/*"
 
 jobs:
   build:

@@ -50,6 +50,10 @@ module "database" {
 }
 
 module "compute" {
-  source     = "./modules/compute"
-  depends_on = [module.project, module.iam]
+  source           = "./modules/compute"
+  artifact_repo_id = var.artifact_repo_id
+  project_name     = var.project_name
+  region           = var.region
+  elt_image_name   = var.elt_image_name
+  depends_on       = [module.project, module.iam]
 }
