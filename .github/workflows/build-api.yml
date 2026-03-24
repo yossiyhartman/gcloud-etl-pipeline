@@ -1,6 +1,6 @@
-name: CD for GCP pipeline
+name: CD for GCP Api
 
-run-name: "Build package (gcp_pipeline) version: ${{ github.sha }}"
+run-name: "Build api image (gcp_pipeline) version: ${{ github.sha }}"
 
 on:
   pull_request:
