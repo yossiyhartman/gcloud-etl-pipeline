@@ -17,3 +17,8 @@ variable "elt_image_name" {
   description = "Name of the image"
   type        = string
 }
+
+variable "api_image_name" {
+  description = "Name of the image"
+  type        = string
+}

@@ -55,5 +55,6 @@ module "compute" {
   project_name     = var.project_name
   region           = var.region
   elt_image_name   = var.elt_image_name
+  api_image_name   = var.api_image_name
   depends_on       = [module.project, module.iam]
 }
