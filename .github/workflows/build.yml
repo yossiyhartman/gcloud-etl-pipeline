@@ -19,11 +19,11 @@ jobs:
       matrix:
         include:
           - dockerfile: Dockerfile.api
-            image_name: api
+            image_name: ${{ vars.IMG_API }}
           - dockerfile: Dockerfile.to_bucket
-            image_name: ingtest-in-bucket
+            image_name: ${{ vars.IMG_TO_BUCKET }}
           - dockerfile: Dockerfile.to_db
-            image_name: ingtest-in-db
+            image_name: ${{ vars.IMG_TO_DB }}
 
     steps:
       - uses: actions/checkout@v5
@@ -50,4 +50,3 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO_ID }}/${{ matrix.image_name }}:latest
-            ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO_ID }}/${{ matrix.image_name }}:${{ github.sha }}

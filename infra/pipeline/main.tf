@@ -54,7 +54,8 @@ module "compute" {
   artifact_repo_id = var.artifact_repo_id
   project_name     = var.project_name
   region           = var.region
-  elt_image_name   = var.elt_image_name
-  api_image_name   = var.api_image_name
+  img_to_bucket    = var.img_to_bucket
+  img_api          = var.img_api
+  img_to_db        = var.img_to_db
   depends_on       = [module.project, module.iam]
 }

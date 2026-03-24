@@ -19,8 +19,9 @@ env:
   TF_VAR_service_account_email: ${{ vars.SERVICE_ACCOUNT_EMAIL }}
   TF_VAR_artifact_repo_id: ${{ vars.ARTIFACT_REPO_ID }}
   TF_VAR_bucket_name: ${{ vars.BUCKET_NAME }}
-  TF_VAR_elt_image_name: ${{ vars.ELT_IMAGE_NAME }}
-  TF_VAR_api_image_name: ${{ vars.API_IMAGE_NAME }}
+  TF_VAR_img_to_bucket: ${{ vars.ELT_IMAGE_NAME }}
+  TF_VAR_img_to_db: ${{ vars.API_IMAGE_NAME }}
+  TF_VAR_img_api: ${{ vars.API_IMAGE_NAME }}
   #
   TF_VAR_instance_name: ${{ secrets.DB_INSTANCE_NAME }}
   TF_VAR_db_name: ${{ secrets.DB_NAME }}

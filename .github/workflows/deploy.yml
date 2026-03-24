@@ -1,0 +1,63 @@
+# name: Deploy Cloud Run Jobs
+
+# on: ''
+#   workflow_dispatch:
+#     inputs:
+#       image_tag:
+#         description: "Image tag to deploy (e.g. commit SHA)"
+#         required: true
+#       job:
+#         description: "Which job to deploy"
+#         required: true
+#         default: "all"
+#         type: choice
+#         options:
+#           - all
+#           - api
+#           - ingest-in-bucket
+#           - ingest-in-db
+
+# env:
+
+
+# jobs:
+#   deploy-ingest-to-bucket:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Authenticate to GCP
+#         uses: google-github-actions/auth@v2
+#         with:
+#           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+#       - name: Setup gcloud
+#         uses: google-github-actions/setup-gcloud@v2
+#         with:
+#           project_id: ${{ vars.PROJECT_NAME }}
+
+#       - name: Deploy to Cloud Run Job
+#         run: |
+#           gcloud run jobs update ${{ vars.IMG_TO_BUCKET }} \
+#             --image ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO_ID }}/${{ vars.IMG_TO_BUCKET }}:latest \
+#             --set-env-vars BUCKET_NAME=${{ vars.BUCKET_NAME }}
+
+#   deploy-ingest-to-db:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Authenticate to GCP
+#         uses: google-github-actions/auth@v2
+#         with:
+#           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+#       - name: Setup gcloud
+#         uses: google-github-actions/setup-gcloud@v2
+#         with:
+#           project_id: ${{ vars.PROJECT_NAME }}
+
+#       - name: Deploy to Cloud Run Job
+#         run: |
+#           gcloud run jobs update ${{ vars.IMG_TO_DB }} \
+#             --image ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO_ID }}/${{ vars.IMG_TO_DB }}:latest \
+#             --set-env-vars BUCKET_NAME=${{ vars.BUCKET_NAME }}, PROJECT_NAME=${{ vars.PROJECT_NAME }}, REGION=${{ vars.REGION }}
+#             --set-env-vars DB_INSTANCE_NAME=${{ secrets.DB_INSTANCE_NAME }}, DB_USER=${{ secrets.DB_USER }}, DB_PASS=${{ secrets.DB_PASS }}, DB_NAME=${{ secrets.DB_NAME }}
