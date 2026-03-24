@@ -10,6 +10,7 @@ terraform {
 }
 
 locals {
-  image_name         = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo_id}/${var.elt_image_name}"
-  service_image_name = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo_id}/${var.api_image_name}"
+  img_to_bucket = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo_id}/${var.img_to_bucket}"
+  img_to_db     = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo_id}/${var.img_to_db}"
+  img_api       = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo_id}/${var.img_api}"
 }

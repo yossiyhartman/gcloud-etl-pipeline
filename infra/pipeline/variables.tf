@@ -42,12 +42,14 @@ variable "db_password" {
   sensitive   = true
 }
 
-variable "elt_image_name" {
-  description = "Name of the image"
-  type        = string
+variable "img_to_bucket" {
+  type = string
 }
 
-variable "api_image_name" {
-  description = "Name of the image"
-  type        = string
+variable "img_to_db" {
+  type = string
+}
+
+variable "img_api" {
+  type = string
 }
