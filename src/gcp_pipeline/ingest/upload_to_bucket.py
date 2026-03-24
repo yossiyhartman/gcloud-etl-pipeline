@@ -17,9 +17,8 @@ BUCKET_PATH = "gs://" + os.getenv("BUCKET_NAME", "")
 def ingest_in_storage():
 
     logger.info("Generating data...")
-    data = DataGenerator().generate(n_records=1)
+    data = DataGenerator().generate(n_records=10)
 
-    # Convert to Arrow table
     table = pa.table(data)
 
     logger.info("Writing dataset to bucket...")

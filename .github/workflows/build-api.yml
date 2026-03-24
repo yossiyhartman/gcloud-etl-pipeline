@@ -1,14 +1,17 @@
-name: CI for building and deploying images
+name: CD for GCP Api
 
-run-name: "CI Build package ${{ github.sha }} on ${{ github.ref }}"
+run-name: "Build api image (gcp_pipeline) version: ${{ github.sha }}"
 
 on:
   push:
-    paths: "./src/**/*"
-    branches:
-      - main
+    branches: ['main']
+    paths:
+      - "./src/**/*"
+      - "Dockerfile.pipeline"
   pull_request:
-    paths: "./src/**/*"
+    paths:
+      - "./src/**/*"
+      - "Dockerfile.api"
 
 jobs:
   build:
@@ -41,8 +44,9 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
+          file: 'Dockerfile.api'
           platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO_ID }}/${{ vars.ELT_IMAGE_NAME }}:latest
-            ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO_ID }}/${{ vars.ELT_IMAGE_NAME }}:${{ github.sha }}
+            ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO_ID }}/${{ vars.API_IMAGE_NAME }}:latest
+            ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO_ID }}/${{ vars.API_IMAGE_NAME }}:${{ github.sha }}
