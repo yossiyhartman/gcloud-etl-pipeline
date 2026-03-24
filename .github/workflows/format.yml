@@ -5,7 +5,7 @@ run-name: "Format check ${{ github.sha }} on ${{ github.ref }}"
 on:
   push:
     paths:
-      - "./src/**/*"
+      - src/**/*
 
 jobs:
   format:
