@@ -1,17 +1,13 @@
 
-resource "google_cloud_run_v2_service" "default" {
-  name     = "api-service"
-  location = var.region
+resource "google_cloud_run_v2_service" "api_service" {
+  name                = "api-service"
+  location            = var.region
   deletion_protection = false
-  ingress = "INGRESS_TRAFFIC_ALL"
-
-  scaling {
-    max_instance_count = 100
-  }
+  ingress             = "INGRESS_TRAFFIC_ALL"
 
   template {
     containers {
-      image = service_image_name
+      image = local.service_image_name
     }
   }
 }

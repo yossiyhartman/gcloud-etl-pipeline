@@ -10,6 +10,6 @@ terraform {
 }
 
 locals {
-  image_name = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo_id}/${var.elt_image_name}"
+  image_name         = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo_id}/${var.elt_image_name}"
   service_image_name = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo_id}/${var.api_image_name}"
 }
