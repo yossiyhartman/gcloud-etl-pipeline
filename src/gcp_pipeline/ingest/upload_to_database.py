@@ -1,10 +1,10 @@
 import logging
 import os
 
-import sqlalchemy
 from dotenv import load_dotenv
-from google.cloud.sql.connector import Connector, IPTypes
+from google.cloud.sql.connector import Connector
 
+from gcp_pipeline.connect.database_connector import DBConnector
 from gcp_pipeline.extract.read_from_bucket import load_all
 
 logger = logging.getLogger(__name__)
@@ -20,34 +20,26 @@ DB_PASS = os.getenv("DB_PASS", "")
 DB_NAME = os.getenv("DB_NAME", "")
 
 
-def create_engine(connector: Connector) -> sqlalchemy.engine.Engine:
-
-    def get_conn():
-        return connector.connect(
-            f"{PROJECT_NAME}:{REGION}:{DB_INSTANCE_NAME}",
-            "pg8000",
-            user=DB_USER,
-            password=DB_PASS,
-            db=DB_NAME,
-            ip_type=IPTypes.PUBLIC,
-        )
-
-    return sqlalchemy.create_engine("postgresql+pg8000://", creator=get_conn)
-
-
 def ingest_in_database():
+
     logger.info("Loading data..")
     df = load_all(BUCKET_PATH)
     logger.info("Loaded. number of rows: %d", len(df))
 
     with Connector(refresh_strategy="LAZY") as connector:
         logger.info("Connecting to Cloud SQL...")
-        engine = create_engine(connector)
+        db_connector = DBConnector(
+            instance_name=f"{PROJECT_NAME}:{REGION}:{DB_INSTANCE_NAME}",
+            user=DB_USER,
+            password=DB_PASS,
+            db=DB_NAME,
+        )
+        engine = db_connector.create_engine(connector)
 
         try:
             logger.info("Writing to database...")
 
-            df.to_sql("moods", engine, if_exists="replace")
+            df.to_sql("mood", engine, index=False, if_exists="replace")
 
             logger.info("Success! ✅")
 
