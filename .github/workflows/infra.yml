@@ -17,7 +17,7 @@ defaults:
 
 jobs:
   lint:
-    if: github.event.pull_request.merged != true
+    if: ${{ github.event_name != 'push' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -43,7 +43,7 @@ jobs:
         run: tflint --recursive -f compact
 
   format:
-    if: github.event.pull_request.merged != true
+    if: ${{ github.event_name != 'push' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -59,7 +59,7 @@ jobs:
         run: terraform fmt -check -recursive
 
   validate:
-    if: github.event.pull_request.merged != true
+    if: ${{ github.event_name != 'push' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -79,7 +79,7 @@ jobs:
 
   plan:
     needs: [lint, format, validate]
-    if: github.event.pull_request.merged != true
+    if: ${{ github.event_name != 'push' }}
     runs-on: ubuntu-latest
 
     steps:
