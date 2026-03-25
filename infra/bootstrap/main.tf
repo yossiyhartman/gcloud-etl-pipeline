@@ -20,6 +20,7 @@ locals {
     "roles/secretmanager.admin",
     "roles/serviceusage.serviceUsageAdmin",
     "roles/resourcemanager.projectIamAdmin",
+    "roles/secretmanager.secretAccessor",
   ]
 }
 
