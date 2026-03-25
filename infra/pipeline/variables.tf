@@ -56,8 +56,8 @@ variable "pipeline_image_name" {
   default     = "pipeline"
 }
 
-# variable "api_image_name" {
-#   type        = string
-#   description = "Name of the api image (Container)"
-#   default     = "api"
-# }
+variable "api_image_name" {
+  type        = string
+  description = "Name of the api image (Container)"
+  default     = "api"
+}

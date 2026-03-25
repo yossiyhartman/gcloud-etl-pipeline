@@ -36,3 +36,23 @@ jobs:
           gcloud run jobs update ${{ matrix.job }} \
             --region ${{ vars.REGION }} \
             --image ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO }}/pipeline:${{github.event.inputs.image_tag}}
+
+  update-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ vars.PROJECT_NAME }}
+
+      - name: Deploy to Cloud Run Job
+        run: |
+          gcloud run jobs update api \
+            --region ${{ vars.REGION }} \
+            --image ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO }}/api:${{github.event.inputs.image_tag}}

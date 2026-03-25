@@ -61,6 +61,6 @@ module "compute" {
   db_password         = module.authorization.password_ref
   instance_name       = module.database.instance_name
   pipeline_image_name = var.pipeline_image_name
-  # api_image_name      = var.api_image_name
-  depends_on = [module.database]
+  api_image_name      = var.api_image_name
+  depends_on          = [module.database]
 }
