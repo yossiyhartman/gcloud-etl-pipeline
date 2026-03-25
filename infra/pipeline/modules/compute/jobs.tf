@@ -7,6 +7,8 @@ resource "google_cloud_run_v2_job" "gcp-ingest-in-bucket" {
 
   template {
     template {
+      service_account = "terraform@yossi-infra-ci-project.iam.gserviceaccount.com"
+
       containers {
         image = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo}/${var.pipeline_image_name}"
 
@@ -31,6 +33,7 @@ resource "google_cloud_run_v2_job" "gcp-ingest-in-database" {
 
   template {
     template {
+      service_account = "terraform@yossi-infra-ci-project.iam.gserviceaccount.com"
       containers {
         image = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo}/${var.pipeline_image_name}"
 
