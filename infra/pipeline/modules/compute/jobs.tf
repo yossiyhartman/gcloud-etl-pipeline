@@ -10,7 +10,7 @@ resource "google_cloud_run_v2_job" "gcp-ingest-in-bucket" {
       service_account = "terraform@yossi-infra-ci-project.iam.gserviceaccount.com"
 
       containers {
-        image = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo}/${var.pipeline_image_name}"
+        image = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo}/${var.pipeline_image_name}:latest"
 
         args = ["gcp_pipeline.ingest.upload_to_bucket"]
 
@@ -35,7 +35,7 @@ resource "google_cloud_run_v2_job" "gcp-ingest-in-database" {
     template {
       service_account = "terraform@yossi-infra-ci-project.iam.gserviceaccount.com"
       containers {
-        image = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo}/${var.pipeline_image_name}"
+        image = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo}/${var.pipeline_image_name}:latest"
 
         args = ["gcp_pipeline.ingest.upload_to_database"]
 

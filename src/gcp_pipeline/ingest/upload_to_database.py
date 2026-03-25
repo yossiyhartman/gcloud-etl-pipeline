@@ -36,15 +36,9 @@ def ingest_in_database():
         )
         engine = db_connector.create_engine(connector)
 
-        try:
-            logger.info("Writing to database...")
-
-            df.to_sql("mood", engine, index=False, if_exists="replace")
-
-            logger.info("Success! ✅")
-
-        except Exception as e:
-            logger.exception("Connection failed", exc_info=e)
+        logger.info("Writing to database...")
+        df.to_sql("mood", engine, index=False, if_exists="replace")
+        logger.info("Success! ✅")
 
 
 if __name__ == "__main__":
