@@ -259,3 +259,4 @@ terraform.rc
 
 secrets/
 secrets/**
+QUESTIONS.txt

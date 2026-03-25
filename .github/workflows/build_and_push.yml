@@ -48,3 +48,4 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO }}/${{ matrix.image_name }}:latest
+            ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO }}/${{ matrix.image_name }}:${{ github.sha }}
