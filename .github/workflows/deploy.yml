@@ -5,7 +5,7 @@ on:
 
 
 jobs:
-  deploy-ingest-in-bucket:
+  update-pipeline-jobs:
     runs-on: ubuntu-latest
 
     strategy:
