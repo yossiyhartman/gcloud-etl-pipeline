@@ -50,14 +50,14 @@ variable "db_user" {
 
 # Containers
 
-variable "pipeline_image_name" {
-  type        = string
-  description = "Name of the pipeline image (Container)"
-  default     = "pipeline"
-}
+# variable "pipeline_image_name" {
+#   type        = string
+#   description = "Name of the pipeline image (Container)"
+#   default     = "pipeline"
+# }
 
-variable "api_image_name" {
-  type        = string
-  description = "Name of the api image (Container)"
-  default     = "api"
-}
+# variable "api_image_name" {
+#   type        = string
+#   description = "Name of the api image (Container)"
+#   default     = "api"
+# }

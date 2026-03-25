@@ -34,12 +34,12 @@ variable "db_password" {
   sensitive   = true
 }
 
-variable "pipeline_image_name" {
-  type        = string
-  description = "Name of the pipeline image (Container)"
-}
+# variable "pipeline_image_name" {
+#   type        = string
+#   description = "Name of the pipeline image (Container)"
+# }
 
-variable "api_image_name" {
-  type        = string
-  description = "Name of the api image (Container)"
-}
+# variable "api_image_name" {
+#   type        = string
+#   description = "Name of the api image (Container)"
+# }

@@ -21,7 +21,6 @@ module "project" {
 module "authorization" {
   source       = "./modules/authorization"
   project_name = var.project_name
-  region       = var.region
 }
 
 module "artifact" {
