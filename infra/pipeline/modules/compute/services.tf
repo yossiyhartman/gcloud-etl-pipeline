@@ -7,6 +7,7 @@ resource "google_cloud_run_v2_service" "api_service" {
   ingress             = "INGRESS_TRAFFIC_ALL"
 
   template {
+    service_account = "terraform@yossi-infra-ci-project.iam.gserviceaccount.com"
     containers {
       image = "${var.region}-docker.pkg.dev/${var.project_name}/${var.artifact_repo}/${var.api_image_name}"
 
