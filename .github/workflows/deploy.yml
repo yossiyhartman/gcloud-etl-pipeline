@@ -51,8 +51,8 @@ jobs:
         with:
           project_id: ${{ vars.PROJECT_NAME }}
 
-      - name: Deploy to Cloud Run Job
+      - name: Deploy to Cloud Run Service
         run: |
-          gcloud run jobs update api \
+          gcloud run services update api \
             --region ${{ vars.REGION }} \
             --image ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO }}/api:${{github.event.inputs.image_tag}}
