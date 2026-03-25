@@ -11,9 +11,7 @@ load_dotenv()
 
 app = FastAPI()
 
-PROJECT_NAME = os.getenv("PROJECT_NAME", "")
-REGION = os.getenv("REGION", "")
-DB_INSTANCE_NAME = os.getenv("DB_INSTANCE_NAME", "")
+INSTANCE_NAME = os.getenv("INSTANCE_NAME", "")
 DB_USER = os.getenv("DB_USER", "")
 DB_PASS = os.getenv("DB_PASS", "")
 DB_NAME = os.getenv("DB_NAME", "")
@@ -21,7 +19,7 @@ DB_NAME = os.getenv("DB_NAME", "")
 connector = Connector(refresh_strategy="LAZY")
 
 db_connector = DBConnector(
-    instance_name=f"{PROJECT_NAME}:{REGION}:{DB_INSTANCE_NAME}",
+    instance_name=INSTANCE_NAME,
     user=DB_USER,
     password=DB_PASS,
     db=DB_NAME,
