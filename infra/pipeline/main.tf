@@ -50,16 +50,17 @@ module "database" {
   depends_on    = [module.project, module.authorization]
 }
 
-# module "compute" {
-#   source              = "./modules/compute"
-#   project_name        = var.project_name
-#   region              = var.region
-#   bucket_name         = var.bucket_name
-#   db_name             = var.db_name
-#   db_user             = var.db_user
-#   db_password         = module.authorization.password_ref
-#   instance_name       = module.database.instance_name
-#   pipeline_image_name = var.pipeline_image_name
-#   api_image_name      = var.api_image_name
-#   depends_on          = [module.database]
-# }
+module "compute" {
+  source              = "./modules/compute"
+  project_name        = var.project_name
+  region              = var.region
+  artifact_repo       = var.artifact_repo
+  bucket_name         = var.bucket_name
+  db_name             = var.db_name
+  db_user             = var.db_user
+  db_password         = module.authorization.password_ref
+  instance_name       = module.database.instance_name
+  pipeline_image_name = var.pipeline_image_name
+  # api_image_name      = var.api_image_name
+  depends_on = [module.database]
+}

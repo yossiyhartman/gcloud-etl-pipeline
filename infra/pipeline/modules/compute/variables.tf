@@ -13,6 +13,12 @@ variable "bucket_name" {
   type        = string
 }
 
+variable "artifact_repo" {
+  type        = string
+  description = "Name of the repo in the Artifact Repository"
+}
+
+
 variable "instance_name" {
   description = "name of the CloudSQL instance"
   type        = string
@@ -34,10 +40,10 @@ variable "db_password" {
   sensitive   = true
 }
 
-# variable "pipeline_image_name" {
-#   type        = string
-#   description = "Name of the pipeline image (Container)"
-# }
+variable "pipeline_image_name" {
+  type        = string
+  description = "Name of the pipeline image (Container)"
+}
 
 # variable "api_image_name" {
 #   type        = string
