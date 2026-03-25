@@ -7,6 +7,13 @@ on:
 jobs:
   deploy-ingest-in-bucket:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - job: ingest-in-bucket
+          - job: ingest-in-db
+
     steps:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
@@ -20,23 +27,6 @@ jobs:
 
       - name: Deploy to Cloud Run Job
         run: |
-          gcloud run jobs update ingest-in-bucket \
-            --image ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO }}/pipeline:latest
-
-  deploy-ingest-in-db:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Authenticate to GCP
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-
-      - name: Setup gcloud
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ vars.PROJECT_NAME }}
-
-      - name: Deploy to Cloud Run Job
-        run: |
-          gcloud run jobs update ingest-in-db \
+          gcloud run jobs update ${{ matrix.job }} \
+            --region ${{ vars.REGION }} \
             --image ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO }}/pipeline:latest
