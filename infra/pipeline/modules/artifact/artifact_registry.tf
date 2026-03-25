@@ -9,10 +9,9 @@ terraform {
   }
 }
 
-resource "google_artifact_registry_repository" "artifact-repo" {
+resource "google_artifact_registry_repository" "artifact_repo" {
   project       = var.project_name
-  repository_id = var.artifact_repo_id
-  description   = ""
-  format        = "DOCKER"
+  repository_id = var.artifact_repo
   location      = var.region
+  format        = "DOCKER"
 }

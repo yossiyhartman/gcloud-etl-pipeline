@@ -14,10 +14,10 @@ load_dotenv()
 BUCKET_PATH = "gs://" + os.getenv("BUCKET_NAME", "")
 PROJECT_NAME = os.getenv("PROJECT_NAME", "")
 REGION = os.getenv("REGION", "")
-DB_INSTANCE_NAME = os.getenv("DB_INSTANCE_NAME", "")
+INSTANCE_NAME = os.getenv("INSTANCE_NAME", "")
+DB_NAME = os.getenv("DB_NAME", "")
 DB_USER = os.getenv("DB_USER", "")
 DB_PASS = os.getenv("DB_PASS", "")
-DB_NAME = os.getenv("DB_NAME", "")
 
 
 def ingest_in_database():
@@ -29,7 +29,7 @@ def ingest_in_database():
     with Connector(refresh_strategy="LAZY") as connector:
         logger.info("Connecting to Cloud SQL...")
         db_connector = DBConnector(
-            instance_name=f"{PROJECT_NAME}:{REGION}:{DB_INSTANCE_NAME}",
+            instance_name=f"{PROJECT_NAME}:{REGION}:{INSTANCE_NAME}",
             user=DB_USER,
             password=DB_PASS,
             db=DB_NAME,

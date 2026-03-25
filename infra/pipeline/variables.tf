@@ -1,55 +1,63 @@
+# General
+
 variable "project_name" {
-  description = "Name of the GCP Project"
   type        = string
+  description = "Name of the GCP Project"
+  default     = "yossi-infra-ci-project"
 }
 
 variable "region" {
-  description = "The region to store resources"
   type        = string
+  description = "Default region for resources"
+  default     = "europe-west4"
 }
 
+# Registry
 
-variable "artifact_repo_id" {
-  description = "the name of the repo in the Artifact Repository"
+variable "artifact_repo" {
   type        = string
+  description = "Name of the repo in the Artifact Repository"
+  default     = "yossi-repo"
 }
+
+# Strorage
 
 variable "bucket_name" {
-  description = "name of the bucket"
   type        = string
+  description = "Name of the bucket"
+  default     = "yossi-data-bucket"
 }
 
+# Database
+
 variable "instance_name" {
-  description = "Name of the instance"
   type        = string
+  description = "Name of the postgress instance"
+  default     = "yossi-instance"
 }
 
 variable "db_name" {
-  description = "Name of the database"
   type        = string
-  sensitive   = false
+  description = "Name of the database"
+  default     = "yossi-db"
 }
 
 variable "db_user" {
-  description = "Name of the database user"
   type        = string
-  sensitive   = true
-}
-
-variable "db_password" {
   description = "Name of the database user"
+  default     = "yossi"
+}
+
+# Containers
+
+variable "pipeline_image_name" {
   type        = string
-  sensitive   = true
+  description = "Name of the pipeline image (Container)"
+  default     = "pipeline"
 }
 
-variable "img_to_bucket" {
-  type = string
-}
-
-variable "img_to_db" {
-  type = string
-}
-
-variable "img_api" {
-  type = string
+variable "api_image_name" {
+  type        = string
+  description = "Name of the api image (Container)"
+  default     = "api"
 }

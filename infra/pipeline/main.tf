@@ -18,24 +18,26 @@ module "project" {
   project_name = var.project_name
 }
 
-module "iam" {
-  source     = "./modules/iam"
-  depends_on = [module.project]
+module "authorization" {
+  source       = "./modules/authorization"
+  project_name = var.project_name
+  region       = var.region
 }
 
 module "artifact" {
-  source           = "./modules/artifact"
-  project_name     = var.project_name
-  artifact_repo_id = var.artifact_repo_id
-  region           = var.region
-  depends_on       = [module.project, module.iam]
+  source        = "./modules/artifact"
+  project_name  = var.project_name
+  region        = var.region
+  artifact_repo = var.artifact_repo
+  depends_on    = [module.project]
 }
 
 module "storage" {
   source       = "./modules/storage"
   project_name = var.project_name
   bucket_name  = var.bucket_name
-  depends_on   = [module.project, module.iam]
+  region       = var.region
+  depends_on   = [module.project]
 }
 
 module "database" {
@@ -45,17 +47,20 @@ module "database" {
   instance_name = var.instance_name
   db_name       = var.db_name
   db_user       = var.db_user
-  db_password   = var.db_password
-  depends_on    = [module.project, module.iam]
+  db_password   = module.authorization.password_val
+  depends_on    = [module.project, module.authorization]
 }
 
-module "compute" {
-  source           = "./modules/compute"
-  artifact_repo_id = var.artifact_repo_id
-  project_name     = var.project_name
-  region           = var.region
-  img_to_bucket    = var.img_to_bucket
-  img_api          = var.img_api
-  img_to_db        = var.img_to_db
-  depends_on       = [module.project, module.iam]
-}
+# module "compute" {
+#   source              = "./modules/compute"
+#   project_name        = var.project_name
+#   region              = var.region
+#   bucket_name         = var.bucket_name
+#   db_name             = var.db_name
+#   db_user             = var.db_user
+#   db_password         = module.authorization.password_ref
+#   instance_name       = module.database.instance_name
+#   pipeline_image_name = var.pipeline_image_name
+#   api_image_name      = var.api_image_name
+#   depends_on          = [module.database]
+# }
