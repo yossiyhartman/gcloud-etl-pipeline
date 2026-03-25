@@ -1,7 +1,7 @@
 resource "google_cloud_run_v2_job" "gcp-ingest-in-bucket" {
   project             = var.project_name
   name                = "ingest-in-bucket"
-  location            = "europe-west4"
+  location            = var.region
   deletion_protection = false
 
 
@@ -25,7 +25,7 @@ resource "google_cloud_run_v2_job" "gcp-ingest-in-bucket" {
 resource "google_cloud_run_v2_job" "gcp-ingest-in-database" {
   project             = var.project_name
   name                = "ingest-in-db"
-  location            = "europe-west4"
+  location            = var.region
   deletion_protection = false
 
 
