@@ -1,9 +1,15 @@
+
 variable "project_name" {
-  description = "Name of the GCP Project"
   type        = string
+  description = "Name of the GCP Project"
+}
+
+variable "region" {
+  type        = string
+  description = "Default region for resources"
 }
 
 variable "bucket_name" {
-  description = "Name of the bucket where the data will land"
   type        = string
+  description = "Name of the bucket"
 }

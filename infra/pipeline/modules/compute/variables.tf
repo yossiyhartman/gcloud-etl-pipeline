@@ -8,19 +8,38 @@ variable "region" {
   type        = string
 }
 
-variable "artifact_repo_id" {
-  description = "the name of the repo in the Artifact Repository"
+variable "bucket_name" {
+  description = "Name of the landing bucket"
   type        = string
 }
 
-variable "img_to_bucket" {
-  type = string
+variable "instance_name" {
+  description = "name of the CloudSQL instance"
+  type        = string
 }
 
-variable "img_to_db" {
-  type = string
+variable "db_name" {
+  description = "Name of the database"
+  type        = string
 }
 
-variable "img_api" {
-  type = string
+variable "db_user" {
+  description = "Name of the database user"
+  type        = string
 }
+
+variable "db_password" {
+  description = "Name of the database password"
+  type        = string
+  sensitive   = true
+}
+
+# variable "pipeline_image_name" {
+#   type        = string
+#   description = "Name of the pipeline image (Container)"
+# }
+
+# variable "api_image_name" {
+#   type        = string
+#   description = "Name of the api image (Container)"
+# }

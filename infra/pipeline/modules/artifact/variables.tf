@@ -1,14 +1,14 @@
 variable "project_name" {
-  description = "Name of the GCP Project"
   type        = string
+  description = "Name of the GCP Project"
 }
 
 variable "region" {
-  description = "The region to store resources"
   type        = string
+  description = "Default region for resources"
 }
 
-variable "artifact_repo_id" {
-  description = "the name of the repo in the Artifact Repository"
+variable "artifact_repo" {
   type        = string
+  description = "Name of the repo in the Artifact Repository"
 }

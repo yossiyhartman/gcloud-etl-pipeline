@@ -19,11 +19,9 @@ jobs:
       matrix:
         include:
           - dockerfile: Dockerfile.api
-            image_name: ${{ vars.IMG_API }}
-          - dockerfile: Dockerfile.to_bucket
-            image_name: ${{ vars.IMG_TO_BUCKET }}
-          - dockerfile: Dockerfile.to_db
-            image_name: ${{ vars.IMG_TO_DB }}
+            image_name: api
+          - dockerfile: Dockerfile.pipeline
+            image_name: pipeline
 
     steps:
       - uses: actions/checkout@v5
@@ -49,4 +47,4 @@ jobs:
           platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO_ID }}/${{ matrix.image_name }}:latest
+            ${{ vars.REGION }}-docker.pkg.dev/${{ vars.PROJECT_NAME }}/${{ vars.ARTIFACT_REPO }}/${{ matrix.image_name }}:latest
