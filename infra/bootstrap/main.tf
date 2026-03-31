@@ -43,6 +43,16 @@ resource "google_storage_bucket" "terraform_state" {
   }
 }
 
+# Artifact Registry
+
+resource "google_artifact_registry_repository" "artifact_repo" {
+  project       = var.project_name
+  location      = var.region
+  repository_id = "yossi-repo"
+  format        = "DOCKER"
+}
+
+
 # Service Account
 
 resource "google_service_account" "terraform_sa" {
