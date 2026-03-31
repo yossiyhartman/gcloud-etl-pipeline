@@ -21,7 +21,6 @@ locals {
 }
 
 resource "google_project_service" "enable-project-services" {
-  project            = var.project_name
   for_each           = toset(local.services)
   service            = each.key
   disable_on_destroy = false

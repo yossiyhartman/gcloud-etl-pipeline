@@ -3,3 +3,9 @@ variable "project_name" {
   type        = string
   default     = "yossi-infra-ci-project"
 }
+
+variable "region" {
+  description = "Region of resouces"
+  type        = string
+  default     = "europe-west4"
+}

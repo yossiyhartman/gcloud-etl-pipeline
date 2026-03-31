@@ -10,7 +10,6 @@ terraform {
 }
 
 resource "google_sql_database_instance" "instance" {
-  project          = var.project_name
   name             = var.instance_name
   region           = var.region
   database_version = "POSTGRES_17"
