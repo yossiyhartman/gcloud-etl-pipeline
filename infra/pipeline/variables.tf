@@ -10,8 +10,8 @@ variable "region" {
   default     = "europe-west4"
 }
 
-variable "artifact_repo" {
-  type        = string
-  description = "Name of the repo in the Artifact Repository"
-  default     = "yossi-repo"
-}
+# variable "artifact_repo" {
+#   type        = string
+#   description = "Name of the repo in the Artifact Repository"
+#   default     = "yossi-repo"
+# }

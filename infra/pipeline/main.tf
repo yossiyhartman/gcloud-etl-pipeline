@@ -10,7 +10,7 @@ terraform {
 }
 
 locals {
-  database_name = "moods"
+  # database_name = "moods"
 }
 
 
