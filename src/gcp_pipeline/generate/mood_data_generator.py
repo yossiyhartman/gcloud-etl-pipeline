@@ -1,20 +1,22 @@
 import random
 from datetime import datetime, timedelta
 
-OutputFmt = list[dict[str, str]]
+OutputFmt = list[dict[str, list[dict[str, str]]]]
 
 
 class MoodDataGenerator:
     moods: list[str] = ["Hungry", "Horny", "Optimistic", "Motivated", "Dreamy"]
     names: list[str] = ["Wilgo", "Draco", "Silvy", "Jonathan", "Aisha"]
 
-    def generate(self, n_records: int) -> OutputFmt:
+    def generate(self, n_days: int) -> OutputFmt:
 
         event_records: OutputFmt = []
 
-        for name in self.names:
-            for idx in range(n_records):
-                event_time = (datetime.now() - timedelta(idx)).strftime("%d-%m-%Y")
+        for idx in range(n_days):
+            event_time = (datetime.now() - timedelta(idx)).strftime("%Y-%m-%d")
+            day = {event_time: []}
+
+            for name in self.names:
                 todays_mood = random.choice(self.moods)
 
                 record = {
@@ -23,7 +25,10 @@ class MoodDataGenerator:
                     "mood": todays_mood,
                 }
 
-                event_records.append(record)
+                day[event_time].append(record)
+
+            # Append the day
+            event_records.append(day)
 
         return event_records
 
