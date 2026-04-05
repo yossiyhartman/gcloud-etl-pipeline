@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-from datetime import datetime
 
 from dotenv import load_dotenv
 from google.cloud import storage
@@ -17,20 +16,14 @@ BUCKET_NAME = os.environ["LANDING_BUCKET_NAME"]
 
 def ingest_in_landing() -> None:
 
-    # Partition also by the request time later
-    request_time = datetime.now().strftime("%Y-%m-%d %H:%M")
+    gen_data = MoodDataGenerator().generate(n_days=20)
 
-    # Generate
-    gen_data = MoodDataGenerator().generate(n_days=10)
-
-    # Create a connection
     storage_client = storage.Client()
     bucket = storage_client.bucket(BUCKET_NAME)
 
     for day in gen_data:
         for event_time, records in day.items():
-            # Partition Path
-            path = f"event_time={event_time}/upload_date={request_time}/data.ndjson"
+            path = f"{event_time}.ndjson"
 
             # Parse the data such that every dict is on its own line
             ndjson_data = "\n".join(json.dumps(r) for r in records)
