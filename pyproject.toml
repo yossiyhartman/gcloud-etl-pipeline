@@ -8,18 +8,13 @@ dependencies = [
     "cloud-sql-python-connector[pg8000]>=1.20.1",
     "commitizen>=4.13.9",
     "deltalake>=1.5.0",
-    "fastapi>=0.135.2",
     "google-cloud-storage>=3.10.1",
     "pandas>=3.0.1",
     "polars>=1.39.3",
     "pyarrow>=23.0.1",
     "python-dotenv>=1.2.2",
     "sqlalchemy>=2.0.48",
-    "uvicorn>=0.42.0",
 ]
-
-[project.scripts]
-gcp-pipeline = "gcp_pipeline:main"
 
 [build-system]
 requires = ["uv_build>=0.9.7,<=0.10.11"]

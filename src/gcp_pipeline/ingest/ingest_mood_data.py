@@ -14,7 +14,7 @@ load_dotenv()
 BUCKET_NAME = os.environ["LANDING_BUCKET_NAME"]
 
 
-def ingest_in_landing() -> None:
+def ingest_mood_data() -> None:
 
     gen_data = MoodDataGenerator().generate(n_days=20)
 
@@ -23,7 +23,7 @@ def ingest_in_landing() -> None:
 
     for day in gen_data:
         for event_time, records in day.items():
-            path = f"{event_time}.ndjson"
+            path = f"mood/{event_time}.ndjson"
 
             # Parse the data such that every dict is on its own line
             ndjson_data = "\n".join(json.dumps(r) for r in records)
@@ -38,4 +38,4 @@ def ingest_in_landing() -> None:
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    ingest_in_landing()
+    ingest_mood_data()
