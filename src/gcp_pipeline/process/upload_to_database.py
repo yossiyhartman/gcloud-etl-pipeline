@@ -2,10 +2,10 @@ import logging
 import os
 
 from dotenv import load_dotenv
+from gcp_pipeline.extract.read_from_bucket import load_all
 from google.cloud.sql.connector import Connector
 
 from gcp_pipeline.connect.database_connector import DBConnector
-from gcp_pipeline.extract.read_from_bucket import load_all
 
 logger = logging.getLogger(__name__)
 

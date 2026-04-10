@@ -9,6 +9,8 @@ dependencies = [
     "commitizen>=4.13.9",
     "deltalake>=1.5.0",
     "google-cloud-storage>=3.10.1",
+    "jsonschema>=4.26.0",
+    "localdex>=0.3.3",
     "pandas>=3.0.1",
     "polars>=1.39.3",
     "pyarrow>=23.0.1",
@@ -28,3 +30,8 @@ name = "cz_conventional_commits"
 tag_format = "$version"
 version_scheme = "semver"
 version_provider = "uv"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]

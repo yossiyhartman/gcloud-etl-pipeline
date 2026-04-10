@@ -16,7 +16,7 @@ BUCKET_NAME = os.environ["LANDING_BUCKET_NAME"]
 
 def ingest_mood_data() -> None:
 
-    gen_data = MoodDataGenerator().generate(n_days=20)
+    gen_data = MoodDataGenerator().generate(n_days=15)
 
     storage_client = storage.Client()
     bucket = storage_client.bucket(BUCKET_NAME)

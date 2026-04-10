@@ -1,54 +1,125 @@
+import json
 import logging
 import os
+from io import StringIO
 
 import polars as pl
 from dotenv import load_dotenv
 from google.cloud import storage
+from google.cloud.storage import Bucket
 
-from gcp_pipeline.utils import get_current_files_status, get_latest_files_status
-
-logger = logging.getLogger(__name__)
+from gcp_pipeline.file_status_log import FileStatusLog
+from gcp_pipeline.schema_validator import SchemaValidator
 
 load_dotenv()
 
-LANDING_BUCKET_NAME = os.environ["LANDING_BUCKET_NAME"]
-RAW_BUCKET_NAME = os.environ["RAW_BUCKET_NAME"]
-META_BUCKET_NAME = os.environ["META_BUCKET_NAME"]
-SCHEMA_BUCKET_NAME = os.environ["SCHEMA_BUCKET_NAME"]
+LANDING_BUCKET_NAME = os.getenv("LANDING_BUCKET_NAME", "")
+META_BUCKET_NAME = os.getenv("META_BUCKET_NAME", "")
+RAW_BUCKET_NAME = os.getenv("RAW_BUCKET_NAME", "")
+SCHEMA_BUCKET_NAME = os.getenv("SCHEMA_BUCKET_NAME", "")
+
+MOOD_PREFIX = "mood"
+MOOD_SCHEMA_FILE = "mood_schema.json"
+
+logger = logging.getLogger(__name__)
 
 
-def process_mood_data():
-    """TODO: rewrite this function"""
-    # Get client
+def get_current_files_status(bucket: Bucket, prefix: str) -> pl.DataFrame:
+    """Fetch file metadata (name, updated timestamp) from GCS."""
+
+    blobs = bucket.list_blobs(prefix=prefix, fields="items(name,updated),nextPageToken")
+    data = [{"name": blob.name, "updated": blob.updated} for blob in blobs]
+
+    schema = {"name": pl.String, "updated": pl.Datetime(time_zone="UTC")}
+
+    if not data:
+        return pl.DataFrame(schema=schema)
+
+    return pl.DataFrame(data, schema=schema)
+
+
+def load_schema(bucket: Bucket, schema_path: str) -> dict:
+    """Load JSON schema from GCS."""
+    blob = bucket.get_blob(schema_path)
+    if blob is None:
+        raise FileNotFoundError(f"Schema file not found: {schema_path}")
+
+    return json.loads(blob.download_as_bytes())
+
+
+def validate_ndjson(data: str, validator: SchemaValidator) -> bool:
+    """Validate NDJSON string against schema."""
+    for line in data.splitlines():
+        if not line.strip():
+            continue
+
+        record = json.loads(line)
+
+        if not validator.is_valid(record):
+            return False
+
+    return True
+
+
+def process_files(bucket: Bucket, files: list[str], validator: SchemaValidator) -> list[pl.DataFrame]:
+    """Download, validate, and parse files into DataFrames."""
+    valid_dataframes: list[pl.DataFrame] = []
+
+    for file in files:
+        logger.info(f"Processing file: {file}")
+
+        blob = bucket.get_blob(file)
+        if blob is None:
+            logger.warning(f"File not found: {file}")
+            continue
+
+        data = blob.download_as_text()
+
+        if validate_ndjson(data, validator):
+            df = pl.read_ndjson(StringIO(data))
+            valid_dataframes.append(df)
+        else:
+            logger.warning(f"Validation failed for file: {file}")
+
+    return valid_dataframes
+
+
+def process_mood_data() -> None:
+    """Main pipeline for processing mood data."""
+
     client = storage.Client()
     landing_bucket = client.bucket(LANDING_BUCKET_NAME)
+    schema_bucket = client.bucket(SCHEMA_BUCKET_NAME)
 
-    # -- Check which files to update
-    # 01: Get the latest meta data on the log update file. Now you know which data needs to be pulled in.
-    # df_latest_status_files = get_latest_files_status(LANDING_BUCKET_NAME, "mood")
+    file_status_log = FileStatusLog(META_BUCKET_NAME, MOOD_PREFIX)
 
-    # 02: Using the google client library, pull in the files and their metadata
-    blobs_current_status_files = get_current_files_status(landing_bucket, folder="mood")
+    latest_status = file_status_log.get_latest_file_status()
+    current_status = get_current_files_status(landing_bucket, MOOD_PREFIX)
 
-    df_current_status_files = pl.DataFrame(
-        [{"name": blob.name, "updated": blob.updated} for blob in blobs_current_status_files]
-    )
-    df_current_status_files.show()
-    # 03: Compare current with latest. Collect all files that need to be pulled in
-    ...
-    # 04: Do not update meta data yet. Park it till later.
-    ...
+    files_to_update = file_status_log.get_files_to_update(latest_status=latest_status, cur_status=current_status)
 
-    # -- Validate incomming files
-    # 01: get the predifined schema for the mood data
-    # 02: for each file, validate the incomming data against the schema
-    # 03: if there are discrapancies, apply logic or isolate
-    # 04: Log incorrect files
-    #
-    # -- Convert to Delta
-    # 01: Check if delta table exist
-    # 02: If not, create with required configuration, else take delta
-    # 03: update delta table accordingly.
+    logger.info("Detected %d files to update.", len(files_to_update))
+
+    if not files_to_update:
+        return
+
+    schema = load_schema(schema_bucket, MOOD_SCHEMA_FILE)
+    validator = SchemaValidator(schema)
+
+    dataframes = process_files(landing_bucket, files_to_update, validator)
+
+    if not dataframes:
+        logger.warning("No valid data to write.")
+        return
+
+    df = pl.concat(dataframes, how="vertical")
+
+    output_path = f"gs://{RAW_BUCKET_NAME}/{MOOD_PREFIX}"
+    df.write_delta(output_path, mode="overwrite")
+
+    logger.info(f"Data written to {output_path}")
+
+    file_status_log.update_log(cur_status=current_status)
 
 
 if __name__ == "__main__":
