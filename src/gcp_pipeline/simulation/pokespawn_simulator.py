@@ -6,20 +6,23 @@ from typing import Any
 from localdex import LocalDex
 
 Record = dict[str, Any]
-Records = list[Record]
+Records = list[list[Record]]
 
 pokedex = LocalDex()
 LOCATIONS = ["Amsterdam", "Rotterdam", "Utrecht", "Groningen", "Den Haag", "Zutphen", "Urk"]
 
 
-class PokeSpawnDataGenerator:
-    def generate(self, n_days: int) -> Records:
+class PokeSpawnDataSimulator:
+    """"""
 
+    def generate(self, n_days: int) -> Records:
+        """"""
         today = datetime.now(timezone.utc)
 
         records: Records = []
 
         for idx in range(n_days):
+            today_records = []
             day = today - timedelta(idx)
             n_events = random.randint(20, 100)
 
@@ -28,8 +31,8 @@ class PokeSpawnDataGenerator:
                 spawn_time = day + timedelta(seconds=random.randint(100, 40000))
 
                 record: Record = {
-                    "date": spawn_time.date(),
-                    "time": spawn_time.time(),
+                    "date": str(spawn_time.date()),
+                    "time": str(spawn_time.time()),
                     "location": random.choice(LOCATIONS),
                     "pokemon": {
                         "id": pokemon.id,
@@ -47,12 +50,12 @@ class PokeSpawnDataGenerator:
                     },
                 }
 
-                records.append(record)
-
+                today_records.append(record)
+            records.append(today_records)
         return records
 
 
 if __name__ == "__main__":
     from pprint import pprint
 
-    pprint(PokeSpawnDataGenerator().generate(1))
+    pprint(PokeSpawnDataSimulator().generate(1))

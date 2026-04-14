@@ -1,6 +1,6 @@
 from pytest import fixture
 
-from gcp_pipeline.schema_validator import SchemaValidator
+from gcp_pipeline.validation import JSONSchemaValidator
 
 
 @fixture
@@ -20,7 +20,7 @@ def expected_schema():
 class TestSchema:
     def test_valid_data(self, expected_schema):
         sample_data = {"event_time": "2000-02-10", "name": "john", "mood": "moody"}
-        validator = SchemaValidator(schema=expected_schema)
+        validator = JSONSchemaValidator(schema=expected_schema)
 
         result = validator.is_valid(sample_data)
 
@@ -28,7 +28,7 @@ class TestSchema:
 
     def test_invalid_data(self, expected_schema):
         sample_data = {"event_time": "2000-02-10", "name": 0, "mood": ["moody", "happy"]}
-        validator = SchemaValidator(schema=expected_schema)
+        validator = JSONSchemaValidator(schema=expected_schema)
 
         result = validator.is_valid(sample_data)
 
