@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mood.schema",
+  "title": "Mood",
+  "description": "Measured mood on a given day",
+  "type": "object",
+  "properties": { "date": { "type": "string" }, "name": { "type": "string" }, "mood": { "type": "string" } },
+  "required": ["date", "name", "mood"],
+  "additionalProperties": false
+}

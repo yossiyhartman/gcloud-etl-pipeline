@@ -45,7 +45,6 @@ class PokeSpawnDataSimulator:
                         "generation": pokemon.generation,
                         "evolutions": pokemon.evolutions,
                         "stats": {k: v for k, v in asdict(pokemon.base_stats).items()},
-                        "abilities": pokemon.abilities,
                         "moves": pokemon.moves,
                     },
                 }

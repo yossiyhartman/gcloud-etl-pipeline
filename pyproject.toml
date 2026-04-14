@@ -7,15 +7,23 @@ requires-python = ">=3.13"
 dependencies = [
     "cloud-sql-python-connector[pg8000]>=1.20.1",
     "commitizen>=4.13.9",
+    "datamodel-code-generator[ruff]>=0.56.0",
     "deltalake>=1.5.0",
     "google-cloud-storage>=3.10.1",
     "jsonschema>=4.26.0",
     "localdex>=0.3.3",
     "pandas>=3.0.1",
     "polars>=1.39.3",
+    "poldantic>=0.3.1",
     "pyarrow>=23.0.1",
+    "pydantic>=2.13.0",
     "python-dotenv>=1.2.2",
     "sqlalchemy>=2.0.48",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
 ]
 
 [build-system]
@@ -31,7 +39,7 @@ tag_format = "$version"
 version_scheme = "semver"
 version_provider = "uv"
 
-[dependency-groups]
-dev = [
-    "pytest>=9.0.3",
-]
+
+
+[tool.datamodel-codegen]
+formatters = ["ruff-check", "ruff-format"]

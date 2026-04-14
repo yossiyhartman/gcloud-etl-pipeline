@@ -1,15 +1,15 @@
-import json
 import logging
 import os
 
 import polars as pl
+import pydantic
 from dotenv import load_dotenv
-from google.cloud.storage import Blob
+from poldantic.infer_polars import to_polars_schema
 
 from gcp_pipeline.connectors import GCPConnector
+from gcp_pipeline.models.poke_spawn import PokeSpawn
 from gcp_pipeline.serialization import NDJSONSerializer
 from gcp_pipeline.utils import get_current_files_status
-from gcp_pipeline.validation import JSONSchemaValidator
 
 load_dotenv()
 
@@ -23,13 +23,10 @@ def transform_data():
     LANDING_BUCKET_NAME = os.environ["LANDING_BUCKET_NAME"]
     META_BUCKET_NAME = os.environ["META_BUCKET_NAME"]
     RAW_BUCKET_NAME = os.environ["RAW_BUCKET_NAME"]
-    SCHEMA_BUCKET_NAME = os.environ["SCHEMA_BUCKET_NAME"]
-    SCHEMA_FILE = os.environ["POKE_SPAWN_SCHEMA_FILE"]
     DATA_PATH_PREFIX = os.environ["POKE_SPAWN_FOLDER"]
 
     serializer = NDJSONSerializer()
     landing_bucket = GCPConnector(bucket=LANDING_BUCKET_NAME)
-    schema_bucket = GCPConnector(bucket=SCHEMA_BUCKET_NAME)
 
     logger.info("Get the current status of the files in: %s", DATA_PATH_PREFIX)
     current_status = get_current_files_status(landing_bucket.bucket, DATA_PATH_PREFIX)
@@ -53,9 +50,6 @@ def transform_data():
 
     logger.info("Found %d updated files", len(changed_file_names))
 
-    schema: Blob = schema_bucket.read(f"{SCHEMA_FILE}")
-    validator = JSONSchemaValidator(json.loads(schema.download_as_bytes()))
-
     df_changed_files: list[pl.DataFrame] = []
 
     for file in changed_file_names:
@@ -66,9 +60,10 @@ def transform_data():
         records = serializer.read(data)
 
         for record in records:
-            if not validator.is_valid(record):
+            try:
+                PokeSpawn.model_validate(record)
+            except pydantic.ValidationError:
                 logger.warning(f"Validation failed for file: {file}")
-                break
         else:
             df_changed_files.append(pl.DataFrame(records))
 
@@ -77,6 +72,9 @@ def transform_data():
         return
 
     df = pl.concat(df_changed_files, how="vertical")
+
+    # ensure correct schema
+    df = df.cast(pl.Schema(to_polars_schema(PokeSpawn)))
 
     output_path = f"gs://{RAW_BUCKET_NAME}/{DATA_PATH_PREFIX}"
     logger.info(f"Write new data to {output_path}")
