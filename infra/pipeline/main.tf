@@ -66,6 +66,31 @@ module "raw_bucket" {
   depends_on  = [module.project_services]
 }
 
+
+module "schema_bucket" {
+  source = "./modules/storage"
+
+  providers = {
+    google = google
+  }
+
+  bucket_name = "yossi-schema-bucket"
+  region      = var.region
+  depends_on  = [module.project_services]
+}
+
+module "meta_bucket" {
+  source = "./modules/storage"
+
+  providers = {
+    google = google
+  }
+
+  bucket_name = "yossi-meta-bucket"
+  region      = var.region
+  depends_on  = [module.project_services]
+}
+
 # Database
 
 # module "database" {

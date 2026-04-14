@@ -7,18 +7,24 @@ requires-python = ">=3.13"
 dependencies = [
     "cloud-sql-python-connector[pg8000]>=1.20.1",
     "commitizen>=4.13.9",
-    "fastapi>=0.135.2",
+    "datamodel-code-generator[ruff]>=0.56.0",
+    "deltalake>=1.5.0",
     "google-cloud-storage>=3.10.1",
+    "jsonschema>=4.26.0",
+    "localdex>=0.3.3",
     "pandas>=3.0.1",
     "polars>=1.39.3",
+    "poldantic>=0.3.1",
     "pyarrow>=23.0.1",
+    "pydantic>=2.13.0",
     "python-dotenv>=1.2.2",
     "sqlalchemy>=2.0.48",
-    "uvicorn>=0.42.0",
 ]
 
-[project.scripts]
-gcp-pipeline = "gcp_pipeline:main"
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]
 
 [build-system]
 requires = ["uv_build>=0.9.7,<=0.10.11"]
@@ -32,3 +38,8 @@ name = "cz_conventional_commits"
 tag_format = "$version"
 version_scheme = "semver"
 version_provider = "uv"
+
+
+
+[tool.datamodel-codegen]
+formatters = ["ruff-check", "ruff-format"]

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "poke_spawn",
+  "title": "Poke spawn",
+  "description": "Captures a pokemon spawn",
+
+  "type": "object",
+  "properties": {
+    "date": { "type": "string" },
+    "time": { "type": "string" },
+    "location": { "type": "string" },
+
+    "pokemon": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "weight": { "type": ["number", "null"] },
+        "height": { "type": ["number", "null"] },
+        "evo_condition": { "type": ["string", "null"] },
+        "evo_level": { "type": ["integer", "null"] },
+        "generation": { "type": "integer" },
+
+        "stats": {
+          "type": "object",
+          "properties": {
+            "attack": { "type": "integer" },
+            "defense": { "type": "integer" },
+            "hp": { "type": "integer" },
+            "special_attack": { "type": "integer" },
+            "special_defense": { "type": "integer" },
+            "speed": { "type": "integer" }
+          }
+        },
+
+        "types": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+
+        "evolutions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+
+        "moves": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["id", "name"]
+    }
+  },
+  "required": ["date", "time", "location", "pokemon"]
+}
