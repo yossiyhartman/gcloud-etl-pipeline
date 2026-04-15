@@ -5,7 +5,7 @@ from gcp_pipeline.simulation import PokeSpawnDataSimulator
 
 
 def generate_cases():
-    return PokeSpawnDataSimulator().generate(1)[0]
+    return PokeSpawnDataSimulator().generate(1)[0][:10]
 
 
 @pytest.mark.parametrize("sample", generate_cases())

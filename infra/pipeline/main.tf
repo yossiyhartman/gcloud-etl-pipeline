@@ -10,7 +10,7 @@ terraform {
 }
 
 locals {
-  # database_name = "moods"
+  # database_name = "pokespawn"
 }
 
 
@@ -66,18 +66,6 @@ module "raw_bucket" {
   depends_on  = [module.project_services]
 }
 
-
-module "schema_bucket" {
-  source = "./modules/storage"
-
-  providers = {
-    google = google
-  }
-
-  bucket_name = "yossi-schema-bucket"
-  region      = var.region
-  depends_on  = [module.project_services]
-}
 
 module "meta_bucket" {
   source = "./modules/storage"

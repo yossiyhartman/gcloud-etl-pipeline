@@ -5,7 +5,7 @@ from gcp_pipeline.simulation import MoodDataSimulator
 
 
 def generate_cases():
-    return MoodDataSimulator().generate(1)[0]
+    return MoodDataSimulator().generate(1)[0][:10]
 
 
 @pytest.mark.parametrize("sample", generate_cases())

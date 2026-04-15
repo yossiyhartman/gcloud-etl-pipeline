@@ -8,6 +8,8 @@ dependencies = [
     "cloud-sql-python-connector[pg8000]>=1.20.1",
     "commitizen>=4.13.9",
     "datamodel-code-generator[ruff]>=0.56.0",
+    "dbt>=1.0.0.40.16",
+    "dbt-postgres>=1.10.0",
     "deltalake>=1.5.0",
     "google-cloud-storage>=3.10.1",
     "jsonschema>=4.26.0",
@@ -38,8 +40,6 @@ name = "cz_conventional_commits"
 tag_format = "$version"
 version_scheme = "semver"
 version_provider = "uv"
-
-
 
 [tool.datamodel-codegen]
 formatters = ["ruff-check", "ruff-format"]
